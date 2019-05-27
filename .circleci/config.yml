@@ -34,7 +34,7 @@ jobs:
             name: Run functional tests
             command: |
                 # data directory must be in 777 because it's a shared volume between FTP and PHP containers.
-                docker exec -u root -it sudoku-app chmod 0777 -R data
+                # docker exec -u root -it sudoku-app chmod 0777 -R data
                 docker exec -it sudoku-app php ./vendor/bin/behat --no-interaction
                 docker exec -it sudoku-app php ./vendor/bin/behat
   build:
@@ -63,12 +63,12 @@ workflows:
     default:
         jobs:
             - test:
-                context: 'benjicola'
+                context: 'sudoku'
                 filters:
                     tags:
                         only: /.*$/
             - build:
-                context: 'benjicola'
+                context: 'sudoku'
                 requires: [test]
                 filters:
                     branches:

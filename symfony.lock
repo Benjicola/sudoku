@@ -136,9 +136,6 @@
     "justinrainbow/json-schema": {
         "version": "5.2.8"
     },
-    "logit/domain-extra-library": {
-        "version": "dev-master"
-    },
     "monolog/monolog": {
         "version": "1.24.0"
     },

@@ -4,6 +4,9 @@ namespace Sudoku\Infra\Resolver;
 
 use Sudoku\Domain\SudokuBoard;
 
+/**
+ * Class BacktrackingResolver
+ */
 class BacktrackingResolver
 {
     /**

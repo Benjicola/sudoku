@@ -10,7 +10,6 @@
         "doctrine/doctrine-bundle": "^1.10",
         "doctrine/orm": "^2.6",
         "graylog2/gelf-php": "^1.6",
-        "logit/domain-extra-library": "dev-master",
         "ramsey/uuid": "^3.8",
         "ramsey/uuid-doctrine": "^1.5",
         "symfony/console": "^4.2",
