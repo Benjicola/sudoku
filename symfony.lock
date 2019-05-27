@@ -170,6 +170,12 @@
     "paragonie/constant_time_encoding": {
         "version": "v2.2.3"
     },
+    "phar-io/manifest": {
+        "version": "1.0.3"
+    },
+    "phar-io/version": {
+        "version": "2.0.1"
+    },
     "php-http/client-common": {
         "version": "1.9.1"
     },
@@ -199,6 +205,39 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
+    },
+    "phpspec/prophecy": {
+        "version": "1.8.0"
+    },
+    "phpunit/php-code-coverage": {
+        "version": "7.0.3"
+    },
+    "phpunit/php-file-iterator": {
+        "version": "2.0.2"
+    },
+    "phpunit/php-text-template": {
+        "version": "1.2.1"
+    },
+    "phpunit/php-timer": {
+        "version": "2.1.1"
+    },
+    "phpunit/php-token-stream": {
+        "version": "3.0.1"
+    },
+    "phpunit/phpunit": {
+        "version": "4.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.7",
+            "ref": "f6f9ee3a511e9d9ad6a53d92fbaa1a709ed8c1ca"
+        },
+        "files": [
+            ".env.test",
+            "phpunit.xml.dist",
+            "config/bootstrap.php",
+            "tests/.gitignore"
+        ]
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -233,17 +272,38 @@
             "config/packages/ramsey_uuid_doctrine.yaml"
         ]
     },
+    "sebastian/code-unit-reverse-lookup": {
+        "version": "1.0.1"
+    },
     "sebastian/comparator": {
         "version": "3.0.2"
     },
     "sebastian/diff": {
         "version": "3.0.2"
     },
+    "sebastian/environment": {
+        "version": "4.2.2"
+    },
     "sebastian/exporter": {
         "version": "3.1.0"
     },
+    "sebastian/global-state": {
+        "version": "3.0.0"
+    },
+    "sebastian/object-enumerator": {
+        "version": "3.0.3"
+    },
+    "sebastian/object-reflector": {
+        "version": "1.1.1"
+    },
     "sebastian/recursion-context": {
         "version": "3.0.0"
+    },
+    "sebastian/resource-operations": {
+        "version": "2.0.1"
+    },
+    "sebastian/version": {
+        "version": "2.0.1"
     },
     "slevomat/coding-standard": {
         "version": "4.8.7"
@@ -485,6 +545,9 @@
             "version": "1.0",
             "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
         }
+    },
+    "theseer/tokenizer": {
+        "version": "1.1.2"
     },
     "tolerance/tolerance": {
         "version": "0.4.2"

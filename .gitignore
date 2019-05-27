@@ -73,3 +73,7 @@ behat.yml
 ###> php storm
 .idea/*
 ###< php storm
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
