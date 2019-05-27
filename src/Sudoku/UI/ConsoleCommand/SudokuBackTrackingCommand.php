@@ -3,6 +3,7 @@
 namespace Sudoku\UI\ConsoleCommand;
 
 use Sudoku\Domain\SudokuBoard;
+use Sudoku\Infra\Resolver\BacktrackingResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,12 +13,24 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SudokuBackTrackingCommand extends Command
 {
+    /** @var ConsoleDisplay */
+    private $consoleDisplay;
+
+    /** @var BacktrackingResolver */
+    private $resolver;
 
     /**
      * ExtractFileCommand constructor.
+     *
+     * @param ConsoleDisplay $consoleDisplay
+     * @param BacktrackingResolver $resolver
      */
     public function __construct( // phpcs:ignore
+        ConsoleDisplay $consoleDisplay,
+        BacktrackingResolver $resolver
     ) {
+        $this->consoleDisplay = $consoleDisplay;
+        $this->resolver = $resolver;
 
         parent::__construct();
     }
@@ -69,82 +82,17 @@ class SudokuBackTrackingCommand extends Command
             [0, 0, 1, 9, 0, 4, 5, 7, 0],
         ];
 
-        $game->setBoard($a);
+        //$game->setBoard($game);
 
-        $this->display($output, $game);
+        $this->consoleDisplay->display($output, $game);
         $start = microtime(true);
-        $this->solve($game, 0);
+        $this->resolver->solve($game, 0);
         $end = microtime(true);
         $output->writeln("\n");
-        $this->display($output, $game);
+        $this->consoleDisplay->display($output, $game);
 
         $output->write(
             sprintf("\n Temps écoulé : %d secondes", $end-$start)
         );
-    }
-
-    /**
-     * @param SudokuBoard $board
-     * @param int         $position
-     *
-     * @return bool
-     */
-    protected function solve(SudokuBoard $board, int $position): bool
-    {
-        if ($board->getCellsCount() === $position) {
-            return true;
-        }
-
-        $line = intval($position/$board->getLineLenght());
-        $column = intval($position%$board->getHeightLenght());
-
-        if (0 !== $board->getValueAt($line, $column)) {
-            return $this->solve($board, $position + 1);
-        }
-
-        for ($number = 1; $number <= $board->getLineLenght(); $number++) {
-            if (!$board->hasNumberOnLine($number, $line) && !$board->hasNumberOnColumn($number, $column) && !$board->hasNumberOnblock($number, $line, $column)) {
-                $board->setValueAt($line, $column, $number);
-                if ($this->solve($board, $position+1)) {
-                    return true;
-                }
-            }
-        }
-
-        $board->setValueAt($line, $column, 0);
-
-        return false;
-    }
-
-    /**
-     * @param OutputInterface $output
-     * @param SudokuBoard     $board
-     *
-     * @return void
-     */
-    protected function display(OutputInterface $output, SudokuBoard $board): void
-    {
-        $output->writeln("\n");
-        for ($i = 0; $i < ($board->getLineLenght() * 2); $i++) {
-            $output->write('-');
-        }
-
-        $output->writeln("");
-
-        for ($i = 0; $i < $board->getLineLenght(); $i++) {
-            for ($j = 0; $j < $board->getHeightLenght(); $j++) {
-                $output->write(
-                    sprintf((($j+1)%3) ? "%d " : "%d|", $board->getValueAt($i, $j))
-                );
-            }
-            $output->writeln("");
-            if (!(($i+1)%$board->getBlockLength())) {
-                for ($k = 0; $k < ($board->getLineLenght() * 2); $k++) {
-                    $output->write('-');
-                }
-                $output->writeln('');
-            }
-        }
-        $output->writeln("\n");
     }
 }
