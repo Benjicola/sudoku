@@ -16,5 +16,7 @@ services:
 
 
     Sudoku\UI\ConsoleCommand\SudokuBackTrackingCommand:
+        arguments:
+            $boardsDirectory: "%kernel.root_dir%/Sudoku/App/Boards/"
         tags:
             - { name: 'console.command', command: 'sudoku:backtracking:solve' }
