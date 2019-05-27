@@ -1,7 +1,0 @@
-\Logit\Components\Domain\Workspace:
-    Workspace.happy_1:
-        __construct: [ <uuidObject('a696ee71-d54f-4217-9592-c74eeae5a997')>, "wakeonweb 1" ]
-    Workspace.happy_2:
-        __construct: [ <uuidObject('a696ee71-d54f-4217-9592-c74eeae5a998')>, "wakeonweb 2" ]
-    Workspace.happy_3:
-        __construct: [ <uuidObject('a696ee71-d54f-4217-9592-c74eeae5a999')>, "wakeonweb 3" ]
