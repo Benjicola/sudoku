@@ -1,0 +1,11 @@
+App\Bundle\EAVBundle\Entity\AttributeType:
+    eav.integer:
+        __construct: ['integer', false]
+    eav.float:
+        __construct: ['float', false]
+    eav.boolean:
+        __construct: ['boolean', false]
+    eav.string:
+        __construct: ['string', false]
+    eav.foo:
+        __construct: ['foo', true]

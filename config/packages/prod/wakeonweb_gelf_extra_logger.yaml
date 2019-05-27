@@ -1,0 +1,4 @@
+wakeonweb_gelf_extra_logger:
+    extra_fields:
+        container_name: "%env(resolve:LOGSTASH_APP)%"
+        environment:    "%env(resolve:LOGSTASH_ENV)%"

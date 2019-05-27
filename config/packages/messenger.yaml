@@ -1,0 +1,9 @@
+framework:
+    messenger:
+        buses:
+            command_bus:
+                middleware:
+                    - validation
+            query_bus:
+                middleware:
+                    - validation

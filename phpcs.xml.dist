@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+    <!-- Overwrite global installed_paths to avoid ruleset name conflicts -->
+    <config name="installed_paths" value="vendor/slevomat/coding-standard/SlevomatCodingStandard"/>
+
+    <!-- Set phpcs arguments -->
+    <arg value="p"/>
+    
+    <arg name="basepath" value="."/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+
+    <!-- Set checked directories -->
+    <file>./src</file>
+    <file>./tests</file>
+    
+    <!-- Define rules -->
+    <rule ref="./vendor/escapestudios/symfony2-coding-standard/Symfony/ruleset.xml" />
+    
+    <rule ref="Symfony">
+        <!-- No need to specify the license block at the top of the file -->
+        <exclude name="Symfony.Commenting.License"/>
+    </rule>
+    
+    <!-- Type hint declaration is mandatory -->
+    <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+        <!-- Documentation comments are always mandatory -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+    </rule>
+    
+    <!-- Spacing in return type hint -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
+    
+    <!-- Default length line : 80 characters. Too restrictive with our current resolution -->
+    <rule ref="Generic.Files.LineLength"> 
+        <properties>
+            <property name="lineLimit" value="250" />
+            <property name="absoluteLineLimit" value="250" />
+        </properties>
+    </rule>
+
+</ruleset>

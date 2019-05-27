@@ -1,0 +1,30 @@
+\Logit\Offer\Domain\OfferType:
+    OfferType.happy_1:
+        __construct: [ <uuidObject('a696ee71-d54f-4217-9592-c74eeae5a895')>, "Test 1", "good" ]
+        __calls:
+          - setEAVMapper: [ <eavMapper()> ]
+          - setAttributes: [ 'Logit\Offer\Domain\Offer',  '<json_decode(''{ "myArrayOfIntegerValue": { "class": "array", "items": { "class": "scalar", "type": "integer", "is_nullable": false } }, "myArrayOfStructureValue": { "class": "array", "items": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }, "myEntityReference": { "class": "scalar", "type": "string", "is_nullable": false }, "myFloatDprop": { "class": "scalar", "type": "float", "is_nullable": false }, "myIntegerDprop": { "class": "scalar", "type": "integer", "is_nullable": false }, "myStringDprop": { "class": "scalar", "type": "string", "is_nullable": false }, "myStructureDprop": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }'')>' ]
+          - addWorkspace: [ '@Workspace.happy_1' ]
+
+    OfferType.happy_2:
+        __construct: [ <uuidObject('a696ee71-d54f-4217-9592-c74eeae5a885')>, "Test 2", "service" ]
+        __calls:
+          - setEAVMapper: [ <eavMapper()> ]
+          - setAttributes: [ 'Logit\Offer\Domain\Offer',  '<json_decode(''{ "myArrayOfIntegerValue": { "class": "array", "items": { "class": "scalar", "type": "integer", "is_nullable": false } }, "myArrayOfStructureValue": { "class": "array", "items": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }, "myEntityReference": { "class": "scalar", "type": "string", "is_nullable": false }, "myFloatDprop": { "class": "scalar", "type": "float", "is_nullable": false }, "myIntegerDprop": { "class": "scalar", "type": "integer", "is_nullable": false }, "myStringDprop": { "class": "scalar", "type": "string", "is_nullable": false }, "myStructureDprop": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }'')>' ]
+          - addWorkspace: [ '@Workspace.happy_1' ]
+
+    OfferType.happy_3:
+        __construct: [ <uuidObject('a696ee71-d54f-4217-9592-c74eeae5a875')>, "Test 3", "good" ]
+        __calls:
+          - setEAVMapper: [ <eavMapper()> ]
+          - setAttributes: [ 'Logit\Offer\Domain\Offer',  '<json_decode(''{ "myArrayOfIntegerValue": { "class": "array", "items": { "class": "scalar", "type": "integer", "is_nullable": false } }, "myArrayOfStructureValue": { "class": "array", "items": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }, "myEntityReference": { "class": "scalar", "type": "string", "is_nullable": false }, "myFloatDprop": { "class": "scalar", "type": "float", "is_nullable": false }, "myIntegerDprop": { "class": "scalar", "type": "integer", "is_nullable": false }, "myStringDprop": { "class": "scalar", "type": "string", "is_nullable": false }, "myStructureDprop": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }'')>' ]
+          - addWorkspace: [ '@Workspace.happy_1' ]
+
+    OfferType.4:
+      __construct: [ <uuidObject('6ecdb572-dbe2-46e4-a03c-3a644f7072f2')>, "Test 4", "good" ]
+      __calls:
+        - setEAVMapper: [ <eavMapper()> ]
+        - setAttributes: [ 'Logit\Offer\Domain\Offer',  '<json_decode(''{ "myArrayOfIntegerValue": { "class": "array", "items": { "class": "scalar", "type": "integer", "is_nullable": false } }, "myArrayOfStructureValue": { "class": "array", "items": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }, "myEntityReference": { "class": "scalar", "type": "string", "is_nullable": false }, "myFloatDprop": { "class": "scalar", "type": "float", "is_nullable": false }, "myIntegerDprop": { "class": "scalar", "type": "integer", "is_nullable": false }, "myStringDprop": { "class": "scalar", "type": "string", "is_nullable": false }, "myStructureDprop": { "class": "structure", "type": "foo", "is_nullable": false, "properties": { "foo": { "class": "scalar", "type": "string", "is_nullable": false } } } }'')>' ]
+        - addWorkspace: [ '@Workspace.happy_1' ]
+        - addWorkspace: [ '@Workspace.happy_2' ]
+        - addWorkspace: [ '@Workspace.happy_3' ]

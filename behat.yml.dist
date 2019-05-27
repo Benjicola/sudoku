@@ -1,0 +1,23 @@
+default:
+    suites:
+        default:
+            contexts:
+                - Logit\DomainExtraLibrary\Tests\Context\DoctrineContext:
+                    mapping:
+                        offer: Logit\Offer\Domain\Offer
+                        offer_type: Logit\Offer\Domain\OfferType
+                - Logit\DomainExtraLibrary\Tests\Context\RestApiContext
+                - Ubirak\RestApiBehatExtension\Json\JsonContext
+                - Ubirak\RestApiBehatExtension\RestApiContext
+                - WakeOnWeb\BehatContexts\FidryAliceFixturesContext: ["tests/Fixtures"]
+            paths:
+                - tests/Features
+
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                class: Sudoku\Kernel
+        Ubirak\RestApiBehatExtension\Extension:
+            rest:
+                base_url: http://app:8000
+                store_response: true
