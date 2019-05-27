@@ -7,7 +7,7 @@ namespace Sudoku\Domain;
  */
 class SudokuBoard
 {
-    /** @var array */
+    /** @var int[] */
     private $board = [];
 
     /** @var int */
@@ -32,7 +32,7 @@ class SudokuBoard
         $this->blockHeight = $blockHeight;
         $this->blockNumber = $blockNumber;
 
-        $this->initBoard();
+        $this->initEmptyBoard();
     }
 
     /**
@@ -60,7 +60,7 @@ class SudokuBoard
     }
 
     /**
-     * @param array $game
+     * @param int[] $game
      */
     public function setBoard(array $game): void
     {
@@ -68,11 +68,14 @@ class SudokuBoard
     }
 
     /**
-     * @param $number
-     * @param $line
+     * Return true is $number is already on the line number $line
+     *
+     * @param int $number
+     * @param int $line
+     *
      * @return bool
      */
-    public function hasNumberOnLine($number, $line): bool
+    public function hasNumberOnLine(int $number, int $line): bool
     {
         for ($j = 0; $j < ($this->blockLength * $this->blockNumber); $j++) {
             if ($number === $this->board[$line][$j]) {
@@ -84,11 +87,14 @@ class SudokuBoard
     }
 
     /**
-     * @param $number
-     * @param $column
+     * Return true is $number is already on the column number $column
+     *
+     * @param int $number
+     * @param int $column
+     *
      * @return bool
      */
-    public function hasNumberOnColumn($number, $column): bool
+    public function hasNumberOnColumn(int $number, int $column): bool
     {
         for ($i = 0; $i < ($this->blockHeight * $this->blockNumber); $i++) {
             if ($number === $this->board[$i][$column]) {
@@ -100,17 +106,20 @@ class SudokuBoard
     }
 
     /**
-     * @param $number
-     * @param $line
-     * @param $column
+     * Return true is $number is already inside the block to which belong $line an d $column
+     *
+     * @param int $number
+     * @param int $line
+     * @param int $column
+     *
      * @return bool
      */
-    public function hasNumberOnblock($number, $line, $column): bool
+    public function hasNumberOnblock(int $number, int $line, int $column): bool
     {
         $blockLineIndex = $line - ($line % 3);
         $blockColumnIndex = $column - ($column % 3);  // ou encore : _i = 3*(i/3), _j = 3*(j/3);
         for ($i = $blockLineIndex; $i < ($blockLineIndex + $this->blockLength); $i++) {
-            for ($j = $blockColumnIndex; $j < ($blockColumnIndex + $this->blockHeight) ; $j++) {
+            for ($j = $blockColumnIndex; $j < ($blockColumnIndex + $this->blockHeight); $j++) {
                 if ($number === $this->board[$i][$j]) {
                     return true;
                 }
@@ -121,6 +130,8 @@ class SudokuBoard
     }
 
     /**
+     *  Number of cells in the board
+     *
      * @return int
      */
     public function getCellsCount(): int
@@ -145,29 +156,32 @@ class SudokuBoard
     }
 
     /**
-     * @param $line
-     * @param $column
+     * @param int $line
+     * @param int $column
+     *
      * @return int
      */
-    public function getValueAt($line, $column): int
+    public function getValueAt(int $line, int $column): int
     {
         return $this->board[$line][$column];
     }
 
     /**
-     * @param $line
-     * @param $column
-     * @param $number
+     * @param int $line
+     * @param int $column
+     * @param int $number
      */
-    public function setValueAt($line, $column, $number): void
+    public function setValueAt(int $line, int $column, int $number): void
     {
         $this->board[$line][$column] = $number;
     }
 
     /**
+     * Init an empty board game
      *
+     * @return SudokuBoard
      */
-    private function initBoard(): SudokuBoard
+    private function initEmptyBoard(): SudokuBoard
     {
         for ($i = 0; $i < ($this->blockLength * $this->blockNumber); $i++) {
             for ($j = 0; $j < ($this->blockHeight * $this->blockNumber); $j++) {
@@ -177,5 +191,4 @@ class SudokuBoard
 
         return $this;
     }
-
 }
