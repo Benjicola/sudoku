@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e890a7ac21c59ed65c070f2fbf6d3f5a",
+    "content-hash": "50ae95abefac2823b1f044c8042fbac9",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1155,39 +1155,6 @@
                 "sql"
             ],
             "time": "2014-01-12T16:20:24+00:00"
-        },
-        {
-            "name": "logit/domain-extra-library",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:dispeo/logit-domain-extra-library.git",
-                "reference": "91e9fa63521368527ea74f07d238e651b58363fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dispeo/logit-domain-extra-library/zipball/91e9fa63521368527ea74f07d238e651b58363fc",
-                "reference": "91e9fa63521368527ea74f07d238e651b58363fc",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Logit\\DomainExtraLibrary\\": "src/"
-                }
-            },
-            "license": [
-                "private"
-            ],
-            "description": "Logit - domain",
-            "support": {
-                "source": "https://github.com/dispeo/logit-domain-extra-library/tree/develop",
-                "issues": "https://github.com/dispeo/logit-domain-extra-library/issues"
-            },
-            "time": "2019-05-07T14:42:17+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -7695,9 +7662,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "logit/domain-extra-library": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

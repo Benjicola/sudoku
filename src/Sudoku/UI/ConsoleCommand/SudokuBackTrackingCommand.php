@@ -23,17 +23,19 @@ class SudokuBackTrackingCommand extends Command
     /** @var string */
     private $boardsDirectory;
 
+    /** @var string[] */
     private $levels = [
         'easy',
         'medium',
-        'hard'
+        'hard',
     ];
 
     /**
      * ExtractFileCommand constructor.
      *
-     * @param ConsoleDisplay $consoleDisplay
+     * @param ConsoleDisplay       $consoleDisplay
      * @param BacktrackingResolver $resolver
+     * @param string               $boardsDirectory
      */
     public function __construct( // phpcs:ignore
         ConsoleDisplay $consoleDisplay,
@@ -55,7 +57,7 @@ class SudokuBackTrackingCommand extends Command
         $this
             ->setName('sudoku:backtracking:solve')
             ->setDescription('Solve Sudoku using backtracking')
-            ->addOption('level', 'lvl',  InputOption::VALUE_OPTIONAL, 'easy, medium or hard?', 'easy')
+            ->addOption('level', 'lvl', InputOption::VALUE_OPTIONAL, 'easy, medium or hard?', 'easy')
         ;
     }
 
@@ -77,7 +79,8 @@ class SudokuBackTrackingCommand extends Command
         $currentGoard = $boards[$randKeys];
 
         $output->writeln(
-            sprintf('Sudoku solve with backtracking - level %s',
+            sprintf(
+                'Sudoku solve with backtracking - level %s',
                 $level
             )
         );
