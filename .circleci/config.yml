@@ -1,0 +1,78 @@
+version: 2
+
+jobs:
+  test:
+    machine:
+        enabled: true
+        docker_layer_caching: false
+    steps:
+        - checkout
+        - restore_cache:
+            name: "[cache] restoring composer"
+            keys:
+                - composer-{{ checksum "composer.lock" }}
+        - run:
+            name: Init environment
+            command: |
+                export USERID=$(id -u)
+                export GROUPID=$(id -g)
+                cp .env.dist .env
+                docker-compose up -d --build
+                docker exec -it -e COMPOSER_AUTH="$COMPOSER_AUTH" sudoku-app composer install --no-progress --no-interaction
+        - save_cache:
+            name: "[cache] saving composer"
+            key: composer-{{ checksum "composer.lock" }}
+            paths:
+                - vendor
+        - run:
+            name: Check code style
+            command: docker exec -it sudoku-app ./vendor/bin/phpcs src/
+        - run:
+            name: Run unit tests
+            command: docker exec -it sudoku-app php ./vendor/bin/phpunit tests
+        - run:
+            name: Run functional tests
+            command: |
+                # data directory must be in 777 because it's a shared volume between FTP and PHP containers.
+                # docker exec -u root -it sudoku-app chmod 0777 -R data
+                docker exec -it sudoku-app php ./vendor/bin/behat --no-interaction
+                docker exec -it sudoku-app php ./vendor/bin/behat
+  build:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      steps:
+          - checkout
+          - run:
+              name: set up env variables depending on current context
+              command: |
+                  sh ./.circleci/env_var_setup.sh
+                  . $BASH_ENV
+          - run:
+              name: Login do docker hub
+              command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+          - run:
+              name: Build app
+              command: docker build . --build-arg COMPOSER_AUTH=$COMPOSER_AUTH --file docker/prod/dockerfiles/app/Dockerfile --tag ${APP_IMAGE}:${APP_IMAGE_TAG}
+          - run:
+              name: Push image
+              command: docker push ${APP_IMAGE}:${APP_IMAGE_TAG}
+
+workflows:
+    version: 2
+    default:
+        jobs:
+            - test:
+                context: 'sudoku'
+                filters:
+                    tags:
+                        only: /.*$/
+            - build:
+                context: 'sudoku'
+                requires: [test]
+                filters:
+                    branches:
+                        only: [develop]
+                    tags:
+                        only: /.*$/
+

@@ -23,17 +23,19 @@ class SudokuBackTrackingCommand extends Command
     /** @var string */
     private $boardsDirectory;
 
+    /** @var string[] */
     private $levels = [
         'easy',
         'medium',
-        'hard'
+        'hard',
     ];
 
     /**
      * ExtractFileCommand constructor.
      *
-     * @param ConsoleDisplay $consoleDisplay
+     * @param ConsoleDisplay       $consoleDisplay
      * @param BacktrackingResolver $resolver
+     * @param string               $boardsDirectory
      */
     public function __construct( // phpcs:ignore
         ConsoleDisplay $consoleDisplay,
@@ -55,7 +57,8 @@ class SudokuBackTrackingCommand extends Command
         $this
             ->setName('sudoku:backtracking:solve')
             ->setDescription('Solve Sudoku using backtracking')
-            ->addOption('level', 'lvl',  InputOption::VALUE_OPTIONAL, 'easy, medium or hard?', 'easy')
+            ->addOption('level', 'lvl', InputOption::VALUE_OPTIONAL, 'easy, medium or hard?', 'easy')
+            ->addOption('game', 'game', InputOption::VALUE_OPTIONAL, 'game number', 0)
         ;
     }
 
@@ -72,12 +75,20 @@ class SudokuBackTrackingCommand extends Command
             $level = 'easy';
         }
 
+        $gameNumber = $input->getOption('game');
+
         $boards = json_decode(file_get_contents($this->boardsDirectory.$level.'.json'), true);
-        $randKeys = array_rand($boards);
-        $currentGoard = $boards[$randKeys];
+
+        if (isset($boards[$gameNumber])) {
+            $currentGoard = $boards[$gameNumber];
+        } else {
+            $randKeys = array_rand($boards);
+            $currentGoard = $boards[$randKeys];
+        }
 
         $output->writeln(
-            sprintf('Sudoku solve with backtracking - level %s',
+            sprintf(
+                'Sudoku solve with backtracking - level %s',
                 $level
             )
         );
