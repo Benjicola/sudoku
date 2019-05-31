@@ -58,6 +58,7 @@ class SudokuBackTrackingCommand extends Command
             ->setName('sudoku:backtracking:solve')
             ->setDescription('Solve Sudoku using backtracking')
             ->addOption('level', 'lvl', InputOption::VALUE_OPTIONAL, 'easy, medium or hard?', 'easy')
+            ->addOption('game', 'game', InputOption::VALUE_OPTIONAL, 'game number', 0)
         ;
     }
 
@@ -74,9 +75,16 @@ class SudokuBackTrackingCommand extends Command
             $level = 'easy';
         }
 
+        $gameNumber = $input->getOption('game');
+
         $boards = json_decode(file_get_contents($this->boardsDirectory.$level.'.json'), true);
-        $randKeys = array_rand($boards);
-        $currentGoard = $boards[$randKeys];
+
+        if (isset($boards[$gameNumber])) {
+            $currentGoard = $boards[$gameNumber];
+        } else {
+            $randKeys = array_rand($boards);
+            $currentGoard = $boards[$randKeys];
+        }
 
         $output->writeln(
             sprintf(
