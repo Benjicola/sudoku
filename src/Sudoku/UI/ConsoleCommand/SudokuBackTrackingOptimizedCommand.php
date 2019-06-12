@@ -89,8 +89,9 @@ class SudokuBackTrackingOptimizedCommand extends Command
 
         $output->writeln(
             sprintf(
-                'Sudoku solve with backtracking - level %s',
-                $level
+                'Sudoku solve with optimized backtracking - level %s - game %s',
+                $level,
+                $gameNumber
             )
         );
 

@@ -3,9 +3,9 @@
 namespace Sudoku\Domain;
 
 /**
- * Class NumberExists
+ * Class NumberExistsGrid
  */
-class NumberExists
+class NumberExistsGrid
 {
     /** @var bool[] */
     private $existsOnLine = [];
@@ -75,7 +75,7 @@ class NumberExists
      */
     public function checkExistence(int $line, int $column, int $block, int $number): bool
     {
-        if ($this->existsOnLine[$line][$number] || $this->existsOnColumn[$column][$number] || $this->existsOnBlock[$block][$number]) {
+        if (true === $this->existsOnLine[$line][$number] || true === $this->existsOnColumn[$column][$number] || true === $this->existsOnBlock[$block][$number]) {
             return true;
         }
 

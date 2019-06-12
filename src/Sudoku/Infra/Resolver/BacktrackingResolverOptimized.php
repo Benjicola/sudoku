@@ -3,7 +3,7 @@
 namespace Sudoku\Infra\Resolver;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sudoku\Domain\NumberExists;
+use Sudoku\Domain\NumberExistsGrid;
 use Sudoku\Domain\PossibilitiesGrid;
 use Sudoku\Domain\SudokuBoard;
 
@@ -24,7 +24,7 @@ class BacktrackingResolverOptimized
     public function solve(SudokuBoard $board): bool
     {
         $possibilitiesList = [];
-        $numberExists = new NumberExists($board->getLineLenght(), $board->getHeightLenght());
+        $numberExistsGrid = new NumberExistsGrid($board->getLineLenght(), $board->getHeightLenght());
 
         // init $numberExists object with the numbers on game board
         for ($line = 0; $line < $board->getLineLenght(); $line++) {
@@ -33,9 +33,9 @@ class BacktrackingResolverOptimized
                 $number = $board->getValueAt($line, $column);
                 if (0 !== $number) {
                     $block = 3*intval($line/3)+intval($column/3);
-                    $numberExists->setExistsOnLine($line, $number-1, true);
-                    $numberExists->setExistsOnColumn($column, $number-1, true);
-                    $numberExists->setExistsOnBlock($block, $number-1, true);
+                    $numberExistsGrid->setExistsOnLine($line, $number-1, true);
+                    $numberExistsGrid->setExistsOnColumn($column, $number-1, true);
+                    $numberExistsGrid->setExistsOnBlock($block, $number-1, true);
                 }
             }
         }
@@ -45,7 +45,7 @@ class BacktrackingResolverOptimized
             for ($column = 0; $column < $board->getHeightLenght(); $column++) {
                 $number = $board->getValueAt($line, $column);
                 if (0 === $number) {
-                    $possibilitiesCount = $this->findPossibilities($line, $column, $board->getLineLenght(), $numberExists);
+                    $possibilitiesCount = $this->findPossibilities($line, $column, $board->getLineLenght(), $numberExistsGrid);
                     $possibility = new PossibilitiesGrid($possibilitiesCount, $line, $column);
                     $possibilitiesList[] = $possibility;
                 }
@@ -56,23 +56,23 @@ class BacktrackingResolverOptimized
 
         $possibilitiesCollection = new ArrayCollection($possibilitiesList);
 
-        return $this->fillBoard($board, $possibilitiesCollection, $numberExists);
+        return $this->fillBoard($board, $possibilitiesCollection, $numberExistsGrid);
     }
 
     /**
      * Solve and fill the Sudoku game board
      *
-     * @param SudokuBoard     $sudokuBoard
-     * @param ArrayCollection $possibilitiesGridCollection
-     * @param NumberExists    $numberExists
+     * @param SudokuBoard      $sudokuBoard
+     * @param ArrayCollection  $possibilitiesGridCollection
+     * @param NumberExistsGrid $numberExistsGrid
      *
      * @return bool
      */
-    private function fillBoard(SudokuBoard $sudokuBoard, ArrayCollection $possibilitiesGridCollection, NumberExists $numberExists): bool
+    private function fillBoard(SudokuBoard $sudokuBoard, ArrayCollection $possibilitiesGridCollection, NumberExistsGrid $numberExistsGrid): bool
     {
         $possibilityGrid = $possibilitiesGridCollection->current();
 
-        if (null === $possibilityGrid) {
+        if (!$possibilityGrid) {
             return true;
         }
 
@@ -81,23 +81,23 @@ class BacktrackingResolverOptimized
         $block = 3*intval($line/3)+intval($column/3);
 
         for ($number = 0; $number < $sudokuBoard->getLineLenght(); $number++) {
-            if (!$numberExists->checkExistence($line, $column, $block, $number)) {
-                $numberExists->setExistsOnLine($line, $number, true);
-                $numberExists->setExistsOnColumn($column, $number, true);
-                $numberExists->setExistsOnBlock($block, $number, true);
+            if (!$numberExistsGrid->checkExistence($line, $column, $block, $number)) {
+                $numberExistsGrid->setExistsOnLine($line, $number, true);
+                $numberExistsGrid->setExistsOnColumn($column, $number, true);
+                $numberExistsGrid->setExistsOnBlock($block, $number, true);
 
                 $clone = clone $possibilitiesGridCollection;
                 $clone->next();
 
-                if ($this->fillBoard($sudokuBoard, $clone, $numberExists)) {
+                if ($this->fillBoard($sudokuBoard, $clone, $numberExistsGrid)) {
                     $sudokuBoard->setValueAt($line, $column, $number+1);
 
                     return true;
                 }
 
-                $numberExists->setExistsOnLine($line, $number, false);
-                $numberExists->setExistsOnColumn($column, $number, false);
-                $numberExists->setExistsOnBlock($block, $number, false);
+                $numberExistsGrid->setExistsOnLine($line, $number, false);
+                $numberExistsGrid->setExistsOnColumn($column, $number, false);
+                $numberExistsGrid->setExistsOnBlock($block, $number, false);
             }
         }
 
@@ -107,20 +107,20 @@ class BacktrackingResolverOptimized
     /**
      * Find possibilities for position targeted by $line, $column, $block
      *
-     * @param int          $line
-     * @param int          $column
-     * @param int          $boardMaxNumber
-     * @param NumberExists $numberExists
+     * @param int              $line
+     * @param int              $column
+     * @param int              $boardMaxNumber
+     * @param NumberExistsGrid $numberExistsGrid
      *
      * @return int
      */
-    private function findPossibilities(int $line, int $column, int $boardMaxNumber, NumberExists $numberExists): int
+    private function findPossibilities(int $line, int $column, int $boardMaxNumber, NumberExistsGrid $numberExistsGrid): int
     {
         $possibilities = 0;
 
         for ($number = 0; $number < $boardMaxNumber; $number++) {
             $block = 3*intval($line/3)+intval($column/3);
-            if (!$numberExists->checkExistence($line, $column, $block, $number)) {
+            if (!$numberExistsGrid->checkExistence($line, $column, $block, $number)) {
                 $possibilities++;
             }
         }
