@@ -7,13 +7,13 @@ namespace Sudoku\Domain;
  */
 class NumberExistsGrid
 {
-    /** @var bool[] */
+    /** @var bool[][] */
     private $existsOnLine = [];
 
-    /** @var bool[] */
+    /** @var bool[][] */
     private $existsOnColumn = [];
 
-    /** @var bool[] */
+    /** @var bool[]v */
     private $existsOnBlock = [];
 
     /**

@@ -7,7 +7,7 @@ namespace Sudoku\Domain;
  */
 class SudokuBoard
 {
-    /** @var int[] */
+    /** @var int[][] */
     private $board = [];
 
     /** @var int */
