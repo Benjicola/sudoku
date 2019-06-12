@@ -7,12 +7,22 @@ namespace Sudoku\Domain;
  */
 class PossibilitiesGrid
 {
+    /** @var int */
     private $possibility;
 
+    /** @var bool[] */
     private $line;
 
+    /** @var bool[] */
     private $column;
 
+    /**
+     * PossibilitiesGrid constructor.
+     *
+     * @param int $possibility
+     * @param int $line
+     * @param int $column
+     */
     public function __construct(int $possibility, int $line, int $column)
     {
         $this->possibility = $possibility;
