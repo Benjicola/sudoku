@@ -4,15 +4,16 @@ namespace Sudoku\UI\ConsoleCommand;
 
 use Sudoku\Domain\SudokuBoard;
 use Sudoku\Infra\Resolver\BacktrackingResolver;
+use Sudoku\Infra\Resolver\BacktrackingResolverOptimized;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * class SudokuBackTrackingCommand
+ * class SudokuBackTrackingOptimizedCommand
  */
-class SudokuBackTrackingCommand extends Command
+class SudokuBackTrackingOptimizedCommand extends Command
 {
     /** @var ConsoleDisplay */
     private $consoleDisplay;
@@ -33,13 +34,13 @@ class SudokuBackTrackingCommand extends Command
     /**
      * ExtractFileCommand constructor.
      *
-     * @param ConsoleDisplay       $consoleDisplay
-     * @param BacktrackingResolver $resolver
-     * @param string               $boardsDirectory
+     * @param ConsoleDisplay                $consoleDisplay
+     * @param BacktrackingResolverOptimized $resolver
+     * @param string                        $boardsDirectory
      */
     public function __construct( // phpcs:ignore
         ConsoleDisplay $consoleDisplay,
-        BacktrackingResolver $resolver,
+        BacktrackingResolverOptimized $resolver,
         string $boardsDirectory
     ) {
         $this->consoleDisplay = $consoleDisplay;
@@ -55,8 +56,8 @@ class SudokuBackTrackingCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('sudoku:backtracking:solve')
-            ->setDescription('Solve Sudoku using backtracking')
+            ->setName('sudoku:backtracking-optimized:solve')
+            ->setDescription('Solve Sudoku using backtracking optimized')
             ->addOption('level', 'lvl', InputOption::VALUE_OPTIONAL, 'easy, medium or hard?', 'easy')
             ->addOption('game', 'game', InputOption::VALUE_OPTIONAL, 'game number', 0)
         ;
@@ -88,7 +89,7 @@ class SudokuBackTrackingCommand extends Command
 
         $output->writeln(
             sprintf(
-                'Sudoku solve with backtracking - level %s - game %s',
+                'Sudoku solve with optimized backtracking - level %s - game %s',
                 $level,
                 $gameNumber
             )
