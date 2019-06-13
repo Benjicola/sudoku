@@ -2,6 +2,8 @@
 
 namespace Sudoku\Domain;
 
+use Sudoku\Domain\Exception\OutOfBoardBoundsExceptionException;
+
 /**
  * Class SudokuBoard
  */
@@ -77,6 +79,10 @@ class SudokuBoard
      */
     public function hasNumberOnLine(int $number, int $line): bool
     {
+        if ($line > $this->getLineLenght() - 1) {
+            throw new OutOfBoardBoundsExceptionException();
+        }
+
         for ($j = 0; $j < ($this->blockLength * $this->blockNumber); $j++) {
             if ($number === $this->board[$line][$j]) {
                 return true;
@@ -96,6 +102,10 @@ class SudokuBoard
      */
     public function hasNumberOnColumn(int $number, int $column): bool
     {
+        if ($column > $this->getHeightLenght() - 1) {
+            throw new OutOfBoardBoundsExceptionException();
+        }
+
         for ($i = 0; $i < ($this->blockHeight * $this->blockNumber); $i++) {
             if ($number === $this->board[$i][$column]) {
                 return true;
@@ -116,6 +126,10 @@ class SudokuBoard
      */
     public function hasNumberOnblock(int $number, int $line, int $column): bool
     {
+        if (($line > $this->getLineLenght() - 1) || ($column > $this->getHeightLenght() - 1)) {
+            throw new OutOfBoardBoundsExceptionException();
+        }
+
         $blockLineIndex = $line - ($line % 3);
         $blockColumnIndex = $column - ($column % 3);  // ou encore : _i = 3*(i/3), _j = 3*(j/3);
         for ($i = $blockLineIndex; $i < ($blockLineIndex + $this->blockLength); $i++) {

@@ -81,10 +81,10 @@ class SudokuBackTrackingOptimizedCommand extends Command
         $boards = json_decode(file_get_contents($this->boardsDirectory.$level.'.json'), true);
 
         if (isset($boards[$gameNumber])) {
-            $currentGoard = $boards[$gameNumber];
+            $currentBoard = $boards[$gameNumber];
         } else {
             $randKeys = array_rand($boards);
-            $currentGoard = $boards[$randKeys];
+            $currentBoard = $boards[$randKeys];
         }
 
         $output->writeln(
@@ -96,7 +96,7 @@ class SudokuBackTrackingOptimizedCommand extends Command
         );
 
         $game = new SudokuBoard(3, 3, 3);
-        $game->setBoard($currentGoard);
+        $game->setBoard($currentBoard);
 
         $this->consoleDisplay->display($output, $game);
         $start = microtime(true);
