@@ -1,38 +1,104 @@
 version: 2
 
+
+aliases:
+  - &init_env
+    run:
+      name: Init environment
+      command: |
+        export USERID=$(id -u)
+        export GROUPID=$(id -g)
+        cp .env.dist .env
+        docker-compose up -d --build
+        docker exec -it -e COMPOSER_AUTH="$COMPOSER_AUTH" sudoku-app composer install --no-progress --no-interaction
+
 jobs:
-  test:
+  checkout:
     machine:
         enabled: true
         docker_layer_caching: false
     steps:
-        - checkout
-        - restore_cache:
-            name: "[cache] restoring composer"
-            keys:
-                - composer-{{ checksum "composer.lock" }}
-        - run:
-            name: Init environment
-            command: |
-                export USERID=$(id -u)
-                export GROUPID=$(id -g)
-                cp .env.dist .env
-                docker-compose up -d --build
-                docker exec -it -e COMPOSER_AUTH="$COMPOSER_AUTH" sudoku-app composer install --no-progress --no-interaction
-        - save_cache:
+      - checkout
+      - persist_to_workspace:
+          root: .
+          paths: .
+  restore_cache:
+    machine:
+        enabled: true
+        docker_layer_caching: false
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          name: "[cache] restoring composer"
+          keys:
+            - composer-{{ checksum "composer.lock" }}
+      - persist_to_workspace:
+          root: .
+          paths: .
+  cmd_init:
+    machine:
+        enabled: true
+        docker_layer_caching: false
+    steps:
+      - attach_workspace:
+          at: .
+      - *init_env
+      - persist_to_workspace:
+          root: .
+          paths: .
+  save_cache:
+    machine:
+        enabled: true
+        docker_layer_caching: false
+    steps:
+      - attach_workspace:
+          at: .
+      - save_cache:
             name: "[cache] saving composer"
             key: composer-{{ checksum "composer.lock" }}
             paths:
                 - vendor
-        - run:
-            name: Check code style
-            command: docker exec -it sudoku-app ./vendor/bin/phpcs src/
-        - run:
-            name: Run unit tests
-            command: docker exec -it sudoku-app php ./vendor/bin/phpunit tests
-        - run:
-            name: Run functional tests
-            command: |
+      - persist_to_workspace:
+          root: .
+          paths: .
+  cmd_cs:
+    machine:
+        enabled: true
+        docker_layer_caching: false
+    steps:
+      - attach_workspace:
+          at: .
+      - *init_env
+      - run:
+          name: Check code style
+          command: docker exec -it sudoku-app ./vendor/bin/phpcs src/
+  cmd_phpunit:
+    machine:
+      enabled: true
+      docker_layer_caching: false
+    steps:
+      - restore_cache:
+          name: "[cache] restoring composer"
+          keys:
+            - composer-{{ checksum "composer.lock" }}
+      - attach_workspace:
+          at: .
+      - *init_env
+      - run:
+          name: Run unit tests
+          command: docker exec -it sudoku-app php ./vendor/bin/phpunit tests
+  cmd_behat:
+    machine:
+      enabled: true
+      docker_layer_caching: false
+    steps:
+      - attach_workspace:
+          at: .
+      - *init_env
+      - run:
+          name: Run functional tests
+          command: |
                 # data directory must be in 777 because it's a shared volume between FTP and PHP containers.
                 # docker exec -u root -it sudoku-app chmod 0777 -R data
                 docker exec -it sudoku-app php ./vendor/bin/behat --no-interaction
@@ -62,14 +128,56 @@ workflows:
     version: 2
     default:
         jobs:
-            - test:
+            - checkout:
                 context: 'sudoku'
                 filters:
                     tags:
                         only: /.*$/
+            - restore_cache:
+                  requires:
+                      - checkout
+                  context: 'sudoku'
+                  filters:
+                      tags:
+                          only: /.*$/
+            - cmd_init:
+                  requires:
+                      - restore_cache
+                  context: 'sudoku'
+                  filters:
+                      tags:
+                          only: /.*$/
+            - save_cache:
+                  requires:
+                      - cmd_init
+                  context: 'sudoku'
+                  filters:
+                      tags:
+                          only: /.*$/
+            - cmd_cs:
+                  requires:
+                      - save_cache
+                  context: 'sudoku'
+                  filters:
+                      tags:
+                          only: /.*$/
+            - cmd_phpunit:
+                  requires:
+                      - cmd_cs
+                  context: 'sudoku'
+                  filters:
+                      tags:
+                          only: /.*$/
+            - cmd_behat:
+                  requires:
+                      - cmd_cs
+                  context: 'sudoku'
+                  filters:
+                      tags:
+                          only: /.*$/
             - build:
                 context: 'sudoku'
-                requires: [test]
+                requires: [checkout]
                 filters:
                     branches:
                         only: [develop]
